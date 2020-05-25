@@ -36,14 +36,14 @@ GC_NS_BEGIN
  *      2. Set: 向BitMap中设置一个值, 成功返回1, 不成功返回0
  *      3. Del: 从BitMap中删除一个值, 成功返回1, 不成功返回0; 若原本就没有,
  * 返回1 注意事项:
- *      1. 最大存放容量类型是int32_t, 且受到BITMAP_CAPACITY限制
+ *      1. 最大存放容量类型是int64_t, 且受到BITMAP_CAPACITY限制
  *      2. 实现了拷贝语义和移动语义
  * */
 class BitMap {
  public:
   BitMap();
 
-  explicit BitMap(int32_t nums);
+  explicit BitMap(int64_t nums);
 
   ~BitMap();
 
@@ -56,20 +56,20 @@ class BitMap {
   BitMap &operator=(BitMap &&rhs) noexcept;
 
  public:
-  int Get(int32_t n) const;
+  int Get(int64_t n) const;
 
-  int Set(int32_t n);
+  int Set(int64_t n);
 
-  int Del(int32_t n);
-
- private:
-  static u_int32_t LocateByte(int32_t n);
-
-  static u_int32_t LocateBit(int32_t n);
+  int Del(int64_t n);
 
  private:
-  int32_t nums_;
-  int32_t size_;
+  static u_int64_t LocateByte(int64_t n);
+
+  static u_int64_t LocateBit(int64_t n);
+
+ private:
+  int64_t nums_;
+  int64_t size_;
   std::shared_ptr<char> map_ptr_;
 };
 

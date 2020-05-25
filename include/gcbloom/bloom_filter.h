@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef UTILS_BLOOM_FILTER_H_
-#define UTILS_BLOOM_FILTER_H_
+#ifndef GCBLOOM_BLOOM_FILTER_H_
+#define GCBLOOM_BLOOM_FILTER_H_
 
 #include <array>
 
-#include "../thirdparty/gcbitmap/include/gcbitmap/bitmap.h"
-#include "../thirdparty/smhasher/src/MurmurHash3.h"
-#include "../utils/common.h"
+#include "MurmurHash3.h"
+#include "gcbitmap/bitmap.h"
+#include "gcbloom/common.h"
 
 GC_NS_BEGIN
 
@@ -29,7 +29,7 @@ class BloomFilter {
  public:
   BloomFilter();
 
-  BloomFilter(int32_t capacity, uint8_t num_hash);
+  BloomFilter(int64_t capacity, uint8_t num_hash);
 
   ~BloomFilter();
 
@@ -47,16 +47,16 @@ class BloomFilter {
   void Set(const uint8_t &n, std::size_t len);
 
  private:
-  std::array<uint32_t, 2> MurHash(const uint8_t &data, std::size_t len) const;
-  uint32_t NthDoubleHash(uint8_t n, uint32_t hash_a, uint32_t hash_b,
-                         uint32_t filter_size) const;
+  std::array<uint64_t, 2> MurHash(const uint8_t &data, std::size_t len) const;
+  uint64_t NthDoubleHash(uint8_t n, uint64_t hash_a, uint64_t hash_b,
+                         uint64_t filter_size) const;
 
  private:
-  int32_t capacity_;
+  int64_t capacity_;
   BitMap bit_map_;
   uint8_t num_hash_;
 };
 
 GC_NS_END
 
-#endif  // UTILS_BLOOM_FILTER_H_
+#endif  // GCBLOOM_BLOOM_FILTER_H_

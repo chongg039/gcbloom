@@ -12,6 +12,13 @@ TEST(BloomFilterTest, GetTest) {
   EXPECT_EQ(0, mm.Get(key, 4));
 }
 
+TEST(BloomFilterTest, SetTest) {
+  gc::BloomFilter mm(100000, 2);
+  int key = 9999;
+  mm.Set(key, 4);
+  EXPECT_EQ(1, mm.Get(key, 4));
+}
+
 int main() {
   ::testing::InitGoogleTest();
   return RUN_ALL_TESTS();

@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "../utils/bloom_filter.h"
+#include "gcbloom/bloom_filter.h"
 
 GC_NS_BEGIN
 
 BloomFilter::BloomFilter()
     : capacity_(BLOOM_FILTER_CAPACITY), bit_map_(), num_hash_(2) {}
 
-BloomFilter::BloomFilter(int32_t capacity, uint8_t num_hash)
+BloomFilter::BloomFilter(int64_t capacity, uint8_t num_hash)
     : capacity_(capacity), bit_map_(capacity_), num_hash_(num_hash) {}
 
 BloomFilter::~BloomFilter() = default;
@@ -29,7 +29,7 @@ BloomFilter::~BloomFilter() = default;
 int BloomFilter::Get(const uint8_t &n, std::size_t len) const {
   auto value = MurHash(n, len);
   for (int i = 0; i < num_hash_; ++i) {
-    uint32_t mapped = NthDoubleHash(n, value[0], value[1], capacity_);
+    uint64_t mapped = NthDoubleHash(n, value[0], value[1], capacity_);
     if (1 != bit_map_.Get(mapped)) {
       return 0;
     }
@@ -40,19 +40,19 @@ int BloomFilter::Get(const uint8_t &n, std::size_t len) const {
 void BloomFilter::Set(const uint8_t &n, std::size_t len) {
   auto value = MurHash(n, len);
   for (int i = 0; i < num_hash_; ++i) {
-    uint32_t mapped = NthDoubleHash(n, value[0], value[1], capacity_);
+    uint64_t mapped = NthDoubleHash(n, value[0], value[1], capacity_);
     bit_map_.Set(mapped);
   }
 }
 
-uint32_t BloomFilter::NthDoubleHash(uint8_t n, uint32_t hash_a, uint32_t hash_b,
-                                    uint32_t filter_size) const {
+uint64_t BloomFilter::NthDoubleHash(uint8_t n, uint64_t hash_a, uint64_t hash_b,
+                                    uint64_t filter_size) const {
   return (hash_a + n * hash_b) % filter_size;
 }
 
-std::array<uint32_t, 2> BloomFilter::MurHash(const uint8_t &data,
+std::array<uint64_t, 2> BloomFilter::MurHash(const uint8_t &data,
                                              std::size_t len) const {
-  std::array<uint32_t, 2> value{};
+  std::array<uint64_t, 2> value{};
   MurmurHash3_x64_128(&data, len, 0, value.data());
   return value;
 }

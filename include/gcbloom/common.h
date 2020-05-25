@@ -1,4 +1,4 @@
-// <gcbitmap is a bit-map implementation>
+// <gcbloom is a Bloom filter implementation>
 // Copyright (C) <2020>  <GC>
 //
 // This program is free software: you can redistribute it and/or modify
@@ -14,18 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef GCBITMAP_COMMON_H_
-#define GCBITMAP_COMMON_H_
+#ifndef GCBLOOM_COMMON_H_
+#define GCBLOOM_COMMON_H_
+
+#include <cstdint>
 
 #define GC_NS_BEGIN namespace gc {
 #define GC_NS_END }
 
 GC_NS_BEGIN
 
-constexpr int64_t BIT_OF_BYTE = 8;
-
-constexpr int64_t BITMAP_CAPACITY = 100000000;
+// should less than BITMAP_CAPACITY in bitmap
+constexpr int64_t BLOOM_FILTER_CAPACITY = 10000000;
 
 GC_NS_END
 
-#endif  // GCBITMAP_COMMON_H_
+#endif  // GCBLOOM_COMMON_H_

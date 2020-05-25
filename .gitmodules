@@ -1,6 +1,3 @@
-[submodule "thirdparty/gcbitmap"]
-	path = thirdparty/gcbitmap
-	url = git@github.com:chongg039/gcbitmap.git
 [submodule "thirdparty/smhasher"]
 	path = thirdparty/smhasher
 	url = git@github.com:aappleby/smhasher.git

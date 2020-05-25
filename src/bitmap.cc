@@ -20,7 +20,7 @@ GC_NS_BEGIN
 
 BitMap::BitMap() : nums_(0), size_(0), map_ptr_(nullptr) {}
 
-BitMap::BitMap(int32_t nums) : nums_(nums), size_(0), map_ptr_(nullptr) {
+BitMap::BitMap(int64_t nums) : nums_(nums), size_(0), map_ptr_(nullptr) {
   if (nums > BITMAP_CAPACITY) {
     nums_ = BITMAP_CAPACITY;
   }
@@ -91,9 +91,9 @@ BitMap &BitMap::operator=(BitMap &&rhs) noexcept {
   return *this;
 }
 
-int BitMap::Get(int32_t n) const {
-  u_int32_t loc_byte = LocateByte(n);
-  u_int32_t loc_bit = LocateBit(n);
+int BitMap::Get(int64_t n) const {
+  u_int64_t loc_byte = LocateByte(n);
+  u_int64_t loc_bit = LocateBit(n);
   unsigned char offset = 0x1u << loc_bit;
   if (loc_byte > size_) {
     return 0;
@@ -102,9 +102,9 @@ int BitMap::Get(int32_t n) const {
   }
 }
 
-int BitMap::Set(int32_t n) {
-  u_int32_t loc_byte = LocateByte(n);
-  u_int32_t loc_bit = LocateBit(n);
+int BitMap::Set(int64_t n) {
+  u_int64_t loc_byte = LocateByte(n);
+  u_int64_t loc_bit = LocateBit(n);
   unsigned char offset = 0x1u << loc_bit;
   if (loc_byte > size_) {
     return 0;
@@ -114,10 +114,10 @@ int BitMap::Set(int32_t n) {
   }
 }
 
-int BitMap::Del(int32_t n) {
+int BitMap::Del(int64_t n) {
   if (Get(n) == 0) return 1;
-  u_int32_t loc_byte = LocateByte(n);
-  u_int32_t loc_bit = LocateBit(n);
+  u_int64_t loc_byte = LocateByte(n);
+  u_int64_t loc_bit = LocateBit(n);
   unsigned char offset = 0x1u << loc_bit;
   if (loc_byte > size_) {
     return 0;
@@ -127,8 +127,8 @@ int BitMap::Del(int32_t n) {
   }
 }
 
-u_int32_t BitMap::LocateByte(int32_t n) { return n / BIT_OF_BYTE; }
+u_int64_t BitMap::LocateByte(int64_t n) { return n / BIT_OF_BYTE; }
 
-u_int32_t BitMap::LocateBit(int32_t n) { return n % BIT_OF_BYTE; }
+u_int64_t BitMap::LocateBit(int64_t n) { return n % BIT_OF_BYTE; }
 
 GC_NS_END

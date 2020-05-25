@@ -1,0 +1,9 @@
+add_executable(bloom_test bloom_test.cc)
+target_link_libraries(bloom_test gcbloom)
+target_link_libraries(bloom_test gtest)
+target_link_libraries(bloom_test -lpthread)
+target_link_libraries(bloom_test gcbitmap)
+target_link_libraries(bloom_test murmurhash3)
+
+add_executable(murhash_test murhash_test.cc)
+target_link_libraries(murhash_test murmurhash3)
