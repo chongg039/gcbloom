@@ -25,6 +25,20 @@
 
 GC_NS_BEGIN
 
+/**
+ * BloomFilter轮子实现
+ * 成员变量:
+ *  1. capacity_:   布隆过滤器容量, 收受到bit_map_容量的制约
+ *  2. bit_map_:    BitMap实现
+ *  3. num_hash_:   进行哈希的次数
+ * 对外接口:
+ *  1. Get: 检查是否存在, 0表示一定不存在, 1表示可能存在
+ *  2. Set: 向BloomFilter中添加一个值
+ * 注意事项:
+ *  1. 布隆过滤器大小受到位图大小的限制
+ *  2. 不提供删除元素方法, 不支持拷贝和移动
+ *  3. Get和Set方法目前仅提供了`uint8_t`和`char *`实现
+ */
 class BloomFilter {
  public:
   BloomFilter();
@@ -42,13 +56,17 @@ class BloomFilter {
   BloomFilter &operator=(BloomFilter &&rhs) noexcept = delete;
 
  public:
-  int Get(const uint8_t &n, std::size_t len) const;
+  int Get(const uint8_t data, std::size_t len) const;
 
-  void Set(const uint8_t &n, std::size_t len);
+  int Get(const char *data, std::size_t len) const;
+
+  void Set(const uint8_t data, std::size_t len);
+
+  void Set(const char *data, std::size_t len);
 
  private:
-  std::array<uint64_t, 2> MurHash(const uint8_t &data, std::size_t len) const;
-  uint64_t NthDoubleHash(uint8_t n, uint64_t hash_a, uint64_t hash_b,
+  std::array<uint64_t, 2> MurHash(const void *data, std::size_t len) const;
+  uint64_t NthDoubleHash(int ordinal, uint64_t hash_a, uint64_t hash_b,
                          uint64_t filter_size) const;
 
  private:

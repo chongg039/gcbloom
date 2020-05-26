@@ -1,4 +1,4 @@
-// <gcbloom is a Bloom filter implementation>
+// <gcbitmap is a bit-map implementation>
 // Copyright (C) <2020>  <GC>
 //
 // This program is free software: you can redistribute it and/or modify
@@ -14,33 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "gcbloom/bloom_filter.h"
+#include "gcbitmap/bitmap.h"
+
 #include "gtest/gtest.h"
 
-TEST(BloomFilterTest, UIntGetTest) {
-  gc::BloomFilter filter(100000, 2);
-  uint8_t key = 255;
-  EXPECT_EQ(0, filter.Get(key, 3));
+TEST(BitMapTest, GetTest) {
+  gc::BitMap bitmap(100000);
+  EXPECT_EQ(0, bitmap.Get(10));
 }
 
-TEST(BloomFilterTest, UintSetTest) {
-  gc::BloomFilter filter(100000, 2);
-  uint8_t key = 255;
-  filter.Set(key, 3);
-  EXPECT_EQ(1, filter.Get(key, 3));
+TEST(BitMapTest, SetTest) {
+  gc::BitMap bitmap(100000);
+  bitmap.Set(10);
+  EXPECT_EQ(1, bitmap.Get(10));
 }
 
-TEST(BloomFilterTest, StrGetTest) {
-  gc::BloomFilter filter(100000, 3);
-  const char *key = "string";
-  EXPECT_EQ(0, filter.Get(key, 6));
+TEST(BitMapTest, DelTest) {
+  gc::BitMap bitmap(100000);
+  bitmap.Set(10);
+  EXPECT_EQ(1, bitmap.Get(10));
+  bitmap.Del(10);
+  EXPECT_EQ(0, bitmap.Get(10));
 }
 
-TEST(BloomFilterTest, StrSetTest) {
-  gc::BloomFilter filter(100000, 3);
-  const char *key = "string";
-  filter.Set(key, 6);
-  EXPECT_EQ(1, filter.Get(key, 6));
+TEST(BitMapTest, OutOfRange) {
+  gc::BitMap bitmap(100);
+  bitmap.Set(1000);
+  EXPECT_EQ(0, bitmap.Get(1000));
+}
+
+TEST(BitMapTest, OutOfRangeDel) {
+  gc::BitMap bitmap(100);
+  bitmap.Del(1000);
+  EXPECT_EQ(0, bitmap.Get(10));
 }
 
 int main() {

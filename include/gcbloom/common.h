@@ -19,13 +19,17 @@
 
 #include <cstdint>
 
+#include "gcbitmap/common.h"
+
 #define GC_NS_BEGIN namespace gc {
 #define GC_NS_END }
 
 GC_NS_BEGIN
 
 // should less than BITMAP_CAPACITY in bitmap
-constexpr int64_t BLOOM_FILTER_CAPACITY = 10000000;
+constexpr int64_t BLOOM_FILTER_CAPACITY = BITMAP_CAPACITY;
+// default num of hash
+constexpr uint8_t DEFAULT_N_HASH = 2;
 
 GC_NS_END
 
